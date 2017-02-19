@@ -1,26 +1,8 @@
-import threading
 import datetime
 import sys
 import codecs
 import multiprocessing
 from multiprocessing import Pool, Manager
-
-class ThreadClass(multiprocessing.Process):
-    def __init__(self, index, entityList, qList):
-        multiprocessing.Process.__init__(self)
-        self.index = index
-        self.entityList = entityList
-        self.qList = qList
-    
-    def run(self):
-        fo = open(sys.argv[3] + str(self.index), 'w', encoding='utf8')
-        for qStr in self.qList:
-            print(qStr)
-            for eStr in self.entityList:
-                if qStr.find(eStr) != -1:
-                    fo.write(qStr.strip() + ' | ' + eStr +'\n')
-                    break
-        fo.close()
 
         
 def processQuestion(qCount, lock, index, entityList, qList):        
@@ -36,10 +18,6 @@ def processQuestion(qCount, lock, index, entityList, qList):
                 lock.release()
                 break
         
-            
-
-    
-
 
 if __name__ == '__main__':
 
@@ -48,8 +26,12 @@ if __name__ == '__main__':
 
     fe = open(sys.argv[1], 'r', encoding='utf8')
     fq = open(sys.argv[2], 'r', encoding='utf8')
-
+    
     thread = 20
+    
+    if len(sys.argv) >= 5:
+        thread = int(sys.argv[4])
+
 
     qCache = set()
     qMaxLen = 0
@@ -79,7 +61,7 @@ if __name__ == '__main__':
         p.apply_async(processQuestion, (qCount, lock, i, lEntity, questionList[i * lenSubQuestion : (i + 1) * lenSubQuestion]))  #增加新的进程
     
     p.apply_async(processQuestion, (qCount, lock, thread, lEntity, questionList[thread * lenSubQuestion :]))
-    p.close() # 禁止在增加新的进程
+    p.close() # 禁止增加新的进程
     p.join()
     print('pool process done')
 
