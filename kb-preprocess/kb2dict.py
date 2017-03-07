@@ -1,5 +1,17 @@
 import sys
 import codecs
+import ast
+
+
+
+
+def loadDictfromFile
+    fi = open(sys.argv[1], 'r', encoding=encode)
+    ast.literal_eval(fi.readline())
+
+
+
+
 
 encode = 'utf8'
 
