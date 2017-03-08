@@ -176,28 +176,77 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
                         newAnswerCandidate = answerCandidate(key, pre, q)
                         maxSPSet.add(newAnswerCandidate)
 
-    bestAnswer = ''
+    bestAnswer = set()
+    
+    maxSubSetCopy = maxSubSet.copy()
+    maxSubSet = set()
+    for aCandidate in maxSubSetCopy:
+        aCfound = 0
+        for aC in maxSubSet:
+            if aC.pre == aCandidate.pre and aC.sub == aCandidate.sub:
+                aCfound = 1
+                break
+        if aCfound == 0:
+            maxSubSet.add(aCandidate)
+
+    maxPreSetCopy = maxPreSet.copy()
+    maxPreSet = set()
+    for aCandidate in maxPreSetCopy:
+        aCfound = 0
+        for aC in maxPreSet:
+            if aC.pre == aCandidate.pre and aC.sub == aCandidate.sub:
+                aCfound = 1
+                break
+        if aCfound == 0:
+            maxPreSet.add(aCandidate)
+
+    maxSPSetCopy = maxSPSet.copy()
+    maxSPSet = set()
+    for aCandidate in maxSPSetCopy:
+        aCfound = 0
+        for aC in maxSPSet:
+            if aC.pre == aCandidate.pre and aC.sub == aCandidate.sub:
+                aCfound = 1
+                break
+        if aCfound == 0:
+            maxSPSet.add(aCandidate)
 
     for aCandidate in maxSubSet:
         scoreTmp = aCandidate.calcScore(qtList)
         if scoreTmp > maxScore:
             maxScore = scoreTmp
-            bestAnswer = aCandidate
-
+            bestAnswer = set()
+        if scoreTmp == maxScore:
+            bestAnswer.add(aCandidate)
+            
     for aCandidate in maxPreSet:
         scoreTmp = aCandidate.calcScore(qtList)
         if scoreTmp > maxScore:
             maxScore = scoreTmp
-            bestAnswer = aCandidate
+            bestAnswer = set()
+        if scoreTmp == maxScore:
+            bestAnswer.add(aCandidate)
 
     for aCandidate in maxSPSet:
         scoreTmp = aCandidate.calcScore(qtList)
         if scoreTmp > maxScore:
             maxScore = scoreTmp
-            bestAnswer = aCandidate
-    
+            bestAnswer = set()
+        if scoreTmp == maxScore:
+            bestAnswer.add(aCandidate)
+            
+    bestAnswerCopy = bestAnswer.copy()
+    bestAnswer = set()
+    for aCandidate in bestAnswerCopy:
+        aCfound = 0
+        for aC in bestAnswer:
+            if aC.pre == aCandidate.pre and aC.sub == aCandidate.sub:
+                aCfound = 1
+                break
+        if aCfound == 0:
+            bestAnswer.add(aCandidate)
                         
-    return bestAnswer
+    return bestAnswer #[bestAnswer,maxSubSet,maxPreSet,maxSPSet]
 
 
 def loadQtList(path, encode = 'utf16'):
