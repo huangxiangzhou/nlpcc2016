@@ -2,6 +2,7 @@ import sys
 import codecs
 import lcs
 import Levenshtein
+import time
 
 class answerCandidate:
     def __init__(self, sub = '', pre = '', qRaw = '', qType = 0, score = 0, kbDict = []):
@@ -18,7 +19,6 @@ class answerCandidate:
         qTemplate = self.qRaw.replace(lcsSub, '')
         if self.pre == '':
             self.qType = 2
-            return 0
         else:
             lcsPre = lcs.lcs(self.pre, qTemplate)
             preIndex = qTemplate.index(lcsPre)
@@ -66,21 +66,83 @@ class answerCandidate:
                 if tmp > mSqt13:
                     mSqt13 = tmp
             self.score = (mSqt11 + mSqt12 + mSqt13 + Levenshtein.jaro(lcsSub, self.sub) + Levenshtein.jaro(lcsPre, self.pre))/5
+
+
+        if self.qType == 2:
+            qt20 = qTemplate
+            qt21 = qTemplate[:subIndex]
+            qt22 = qTemplate[subIndex:]
+            mSqt20 = 0
+            preResult = set()
+            for vQt20 in qtList['20']:
+                vQt201 = vQt20[:vQt20.index('|||qS|||')]
+                vQt202 = vQt20[vQt20.index('|||qS|||') + 8:vQt20.index(' ===>>> ')]
+                vQt20pre = vQt20[vQt20.index(' ===>>> ') + 8:]
+                sTmp20 = Levenshtein.jaro(vQt201,qt21) + Levenshtein.jaro(vQt202,qt22)
+                sTmp20pre = 0
+                preTmp = set()
+                for kb in self.kbDict:
+                    for pre in kb:
+                        tmp = Levenshtein.jaro(vQt20pre,pre)
+                        if tmp > sTmp20pre :
+                            sTmp20pre = tmp
+                            preTmp = set()
+                        if tmp == sTmp20pre :
+                            preTmp.add(pre)
+                sTmp20 = (sTmp20 + sTmp20pre + Levenshtein.jaro(lcsSub, self.sub))/4
+                if sTmp20 > mSqt20:
+                    mSqt20 = sTmp20
+                    preResult = set()
+                if sTmp20 == mSqt20:
+                    for pre in preTmp:
+                        preResult.add(pre)
+            self.pre = preResult
+            self.score = mSqt20
         return self.score
+
+def getAnswer(sub, pre, kbDict):
+    for kb in kbDict[sub]:
+        if pre in kb:
+            return kb[pre]
+    return 'NO ANSWER FOUND BY QA SYSTM'
+
 
 
 def answerAllQ(pathInput, pathOutput, lKey, kbDict, qtList):
     fq = open(pathInput, 'r', encoding='utf8')
-    
+    i = 0
+    timeStart = time.time()
     for line in fq:
+        i += 1
         fo = open(pathOutput, 'a', encoding='utf8')
         q = str(line.strip())
         result = answerQ(q, lKey, kbDict, qtList)
-        if result != '':
-            fo.write(q + '=====' + result +'\n')
-            print(result, end = '\r', flush=True)
+        fo.write('<question id='+str(i)+'>\t' + q + '\n')
+        if len(result) != 0:
+            answerSet = set()
+            fo.write('<triple id='+str(i)+'>\t')
+            for res in result:
+                if res.qType == 2:
+                    for pre in res.pre:
+                        answerTmp = getAnswer(res.sub, pre, kbDict)
+                        answerSet.add(answerTmp)
+                        fo.write(res.sub + ' ||| ' + pre + ' ||| ' + answerTmp + ' ====== ')
+                else:
+                    answerTmp = getAnswer(res.sub, res.pre, kbDict)
+                    answerSet.add(answerTmp)
+                    fo.write(res.sub + ' ||| ' + res.pre + ' ||| ' + answerTmp + ' ====== ')
+            fo.write('\n')
+            fo.write('<answer id='+str(i)+'>\t')
+            for ansTmp in answerSet:
+                fo.write(ansTmp)
+                if len(answerSet) > 1:
+                    fo.write(' ||| ')
+            fo.write('\n==================================================\n')
+            
+        print('processing ' + str(i) + 'th Q, average time cost: ' + str((time.time()-timeStart) / i) + 'Second', end = '\r', flush=True)
         fo.close()
     fq.close()
+    
 
 
 
