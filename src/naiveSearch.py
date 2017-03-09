@@ -3,6 +3,9 @@ import codecs
 import lcs
 import Levenshtein
 import time
+import json
+
+
 
 class answerCandidate:
     def __init__(self, sub = '', pre = '', qRaw = '', qType = 0, score = 0, kbDict = []):
@@ -104,7 +107,15 @@ def getAnswer(sub, pre, kbDict):
     for kb in kbDict[sub]:
         if pre in kb:
             return kb[pre]
-    return 'NO ANSWER FOUND BY QA SYSTM'
+    return 'NO ANSWER FOUND BY QA SYSTEM'
+
+
+def loadResAndanswerAllQ(pathInput, pathOutput, pathDict, pathQt, encode='utf16'):
+    print('Start to load kbDict from json format file: ' + pathDict)
+    kbDict = json.load(open(pathDict, 'r', encoding=encode))
+    print('Loaded kbDict completely! kbDic length is '+ str(len(kbDict)))
+    qtList = loadQtList(pathQt, encode)
+    answerAllQ(pathInput, pathOutput, list(kbDict), kbDict, qtList)
 
 
 
@@ -112,6 +123,7 @@ def answerAllQ(pathInput, pathOutput, lKey, kbDict, qtList):
     fq = open(pathInput, 'r', encoding='utf8')
     i = 0
     timeStart = time.time()
+    fo = open(pathOutput, 'w', encoding='utf8')
     for line in fq:
         i += 1
         fo = open(pathOutput, 'a', encoding='utf8')
@@ -139,14 +151,14 @@ def answerAllQ(pathInput, pathOutput, lKey, kbDict, qtList):
                     fo.write(' ||| ')
             fo.write('\n==================================================\n')
             
-        print('processing ' + str(i) + 'th Q, average time cost: ' + str((time.time()-timeStart) / i) + 'Second', end = '\r', flush=True)
+        print('processing ' + str(i) + 'th Q.\tAv time cost: ' + str((time.time()-timeStart) / i)[:6] + ' sec', end = '\r', flush=True)
         fo.close()
     fq.close()
     
 
 
 
-def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
+def answerQ (qRaw, lKey, kbDict, qtList, threshold=0, debug=False):
     q = qRaw.strip().replace(' ','')
     qtType = 0 #0:sub+pre 1:pre+sub 2:sub
 
@@ -171,6 +183,80 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
     qRemoveSubPre = ''
 
     maxScore = 0
+    qtMatchSet = set()
+
+    for qt01 in qtList['01']:
+        if qt01 == '' or q.find(qt01) == 0:
+            qR01 = q.replace(qt01, '', 1)
+            for qt02 in qtList['02']:
+                qFind2 = qR01.find(qt02)
+                if qt02 == '' or qFind2 !=0:
+                    subCandidate = qR01[:qFind2]
+                    qR02 = qR01[qFind2:].replace(qt02, '', 1)
+                    for qt03 in qtList['03']:
+                        qFind3 = qR02.find(qt03)
+                        if qt03 == '' or qFind3 !=0:
+                            preCandidate = qR02[:qFind3]
+                            if subCandidate in kbDict:
+                                for kb in kbDict[subCandidate]:
+                                    if preCandidate in kb:
+                                        newAnswerCandidate = answerCandidate(subCandidate, preCandidate, q)
+                                        qtMatchSet.add(newAnswerCandidate)    
+
+
+    for qt11 in qtList['11']:
+        if qt11 == '' or q.find(qt11) == 0:
+            qR11 = q.replace(qt11, '', 1)
+            for qt12 in qtList['12']:
+                qFind2 = qR11.find(qt12)
+                if qt12 == '' or qFind2 !=0:
+                    preCandidate = qR11[:qFind2]
+                    qR12 = qR11[qFind2:].replace(qt12, '', 1)
+                    for qt13 in qtList['13']:
+                        qFind3 = qR12.find(qt13)
+                        if qt13 == '' or qFind3 !=0:
+                            subCandidate = qR12[:qFind3]
+                            if subCandidate in kbDict:
+                                for kb in kbDict[subCandidate]:
+                                    if preCandidate in kb:
+                                        newAnswerCandidate = answerCandidate(subCandidate, preCandidate, q)
+                                        qtMatchSet.add(newAnswerCandidate)    
+##
+##    # First try to use question template to get perfectly matched QA pair
+##    for qt00 in qtList['00']:
+##        if qt00[0] == '' or q.find(qt00[0]) == 0:
+##            qR0 = q.replace(qt00[0], '', 1)
+##            qFind1 = qR0.find(qt00[1])
+##            if qt00[1] == '' or qFind1 !=0:
+##                subCandidate = qR0[:qFind1]
+##                qR01 = qR0[qFind1:].replace(qt00[1], '', 1)
+##                qFind2 = qR01.find(qt00[2])
+##                if qt00[2] == '' or qFind2 !=0:
+##                    preCandidate = qR01[:qFind2]
+##                    if subCandidate in kbDict:
+##                        for kb in kbDict[subCandidate]:
+##                            if preCandidate in kb:
+##                                newAnswerCandidate = answerCandidate(subCandidate, preCandidate, q)
+##                                qtMatchSet.add(newAnswerCandidate)
+##
+##    
+##    for qt10 in qtList['10']:
+##        if qt10[0] == '' or q.find(qt10[0]) == 0:
+##            qR0 = q.replace(qt10[0], '', 1)
+##            qFind1 = qR0.find(qt10[1])
+##            if qt10[1] == '' or qFind1 !=0:
+##                preCandidate = qR0[:qFind1]
+##                qR01 = qR0[qFind1:].replace(qt10[1], '', 1)
+##                qFind2 = qR01.find(qt10[2])
+##                if qt10[2] == '' or qFind2 !=0:
+##                    subCandidate = qR01[:qFind2]
+##                    if subCandidate in kbDict:
+##                        for kb in kbDict[subCandidate]:
+##                            if preCandidate in kb:
+##                                newAnswerCandidate = answerCandidate(subCandidate, preCandidate, q)
+##                                qtMatchSet.add(newAnswerCandidate)
+##
+
 
     for key in lKey:
         lcsSub = lcs.lcs(q,key)
@@ -184,11 +270,14 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
         if maxSubLen == lcsSubLen:                      
             maxSubSetTmp.add(key)
             
-    
+    maxSPLen = maxSubLen
     for key in lKey:
         lcsSub = lcs.lcs(q,key)
         if lcsSub == '':
             continue
+
+        
+        
         lcsSubLen = len(lcsSub)
       
         lcsSubIndex = q.index(lcsSub)
@@ -196,19 +285,19 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
         qRemoveSub1Len = len(qRemoveSub1)
         qRemoveSub2 = q[lcsSubIndex + lcsSubLen:]
         qRemoveSub2Len = len(qRemoveSub2)
+        foundPre = 0
         for kb in kbDict[key]:    
             for pre in list(kb) :
                 preLen = len(pre)
+                lcsPre1 = ''
+                lcsPre2 = ''
                 if maxSubLen == lcsSubLen : 
-                    if qRemoveSub1Len > maxPreLen:
-                        lcsPre1 = lcs.lcs(qRemoveSub1, pre)
-                    if qRemoveSub2Len > maxPreLen:
-                        lcsPre2 = lcs.lcs(qRemoveSub2, pre)
-                    if lcsPre1 != '' or lcsPre2 != '':
+                    lcsPre1 = lcs.lcs(qRemoveSub1, pre)
+                    lcsPre2 = lcs.lcs(qRemoveSub2, pre)
+                    if lcsPre1 != '' or  lcsPre2 != '':
                         newAnswerCandidate = answerCandidate(key, pre, q)
-                    else:
-                        newAnswerCandidate = answerCandidate(key, '', q, 2, 0, kbDict[key])
-                    maxSubSet.add(newAnswerCandidate)
+                        foundPre = 1
+                        maxSubSet.add(newAnswerCandidate)
                     
                 if preLen > maxPreLen:
                     if qRemoveSub1Len > maxPreLen:
@@ -237,10 +326,14 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
                     if maxResidual12 == maxResidual :
                         newAnswerCandidate = answerCandidate(key, pre, q)
                         maxSPSet.add(newAnswerCandidate)
+        if foundPre == 0 and maxSubLen == lcsSubLen:
+            newAnswerCandidate = answerCandidate(key, '', q, 2, 0, kbDict[key])
+            maxSubSet.add(newAnswerCandidate)
 
-    bestAnswer = set()
+    
     
     maxSubSetCopy = maxSubSet.copy()
+    print('len(maxSubSet) = ' + str(len(maxSubSetCopy)), end = '\r', flush=True)
     maxSubSet = set()
     for aCandidate in maxSubSetCopy:
         aCfound = 0
@@ -252,7 +345,9 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
             maxSubSet.add(aCandidate)
 
     maxPreSetCopy = maxPreSet.copy()
+    print('len(maxPreSet) = ' + str(len(maxPreSetCopy)), end = '\r', flush=True)
     maxPreSet = set()
+
     for aCandidate in maxPreSetCopy:
         aCfound = 0
         for aC in maxPreSet:
@@ -263,6 +358,7 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
             maxPreSet.add(aCandidate)
 
     maxSPSetCopy = maxSPSet.copy()
+    print('len(maxSPSet) = ' + str(len(maxSPSetCopy)), end = '\r', flush=True)
     maxSPSet = set()
     for aCandidate in maxSPSetCopy:
         aCfound = 0
@@ -296,6 +392,17 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
             bestAnswer = set()
         if scoreTmp == maxScore:
             bestAnswer.add(aCandidate)
+
+
+    for aCandidate in qtMatchSet:
+        scoreTmp = aCandidate.calcScore(qtList)
+        if scoreTmp > maxScore:
+            maxScore = scoreTmp
+            bestAnswer = set()
+        if scoreTmp == maxScore:
+            bestAnswer.add(aCandidate)
+
+
             
     bestAnswerCopy = bestAnswer.copy()
     bestAnswer = set()
@@ -307,27 +414,51 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0):
                 break
         if aCfound == 0:
             bestAnswer.add(aCandidate)
-                        
-    return bestAnswer #[bestAnswer,maxSubSet,maxPreSet,maxSPSet]
+    if debug == False:                    
+        return bestAnswer
+    else:
+        return[bestAnswer,maxSubSet,maxPreSet,maxSPSet]
 
 
 def loadQtList(path, encode = 'utf16'):
     qtList = {}
+    
+    qtList['00'] = set()
+    
     qtList['01'] = set()
     qtList['02'] = set()
     qtList['03'] = set()
+    
+    qtList['10'] = set()
+    
     qtList['11'] = set()
     qtList['12'] = set()
     qtList['13'] = set()
     qtList['20'] = set()
     qtList['21'] = set()
     qtList['22'] = set()
+
+    for line in open(path + '00', 'r', encoding = encode):
+        lineStrip = line.strip()
+        qtList['00'].add((lineStrip[:lineStrip.index('|||qS|||')],\
+                          lineStrip[lineStrip.index('|||qS|||')+8:lineStrip.index('|||qP|||')],\
+                          lineStrip[lineStrip.index('|||qP|||')+8:lineStrip.index('|||w|||')],\
+                          int(lineStrip[lineStrip.index('|||w|||')+7:])))
+    
     for line in open(path + '01', 'r', encoding = encode):
         qtList['01'].add(line.strip())
     for line in open(path + '02', 'r', encoding = encode):
         qtList['02'].add(line.strip())
     for line in open(path + '03', 'r', encoding = encode):
         qtList['03'].add(line.strip())
+
+    for line in open(path + '10', 'r', encoding = encode):
+        lineStrip = line.strip()
+        qtList['10'].add((lineStrip[:lineStrip.index('|||qP|||')],\
+                          lineStrip[lineStrip.index('|||qP|||')+8:lineStrip.index('|||qS|||')],\
+                          lineStrip[lineStrip.index('|||qS|||')+8:lineStrip.index('|||w|||')],\
+                          int(lineStrip[lineStrip.index('|||w|||')+7:])))
+
     for line in open(path + '11', 'r', encoding = encode):
         qtList['11'].add(line.strip())
     for line in open(path + '12', 'r', encoding = encode):
@@ -346,17 +477,9 @@ def loadQtList(path, encode = 'utf16'):
         
     
 
-                    
-def longest_common_substring(s1, s2):
-    m = [[0] * (1 + len(s2)) for i in range(1 + len(s1))]
-    longest, x_longest = 0, 0
-    for x in range(1, 1 + len(s1)):
-        for y in range(1, 1 + len(s2)):
-            if s1[x - 1] == s2[y - 1]:
-                m[x][y] = m[x - 1][y - 1] + 1
-                if m[x][y] > longest:
-                    longest = m[x][y]
-                    x_longest = x
-                else:
-                    m[x][y] = 0
-    return s1[x_longest - longest: x_longest]
+if len(sys.argv) == 5:
+    pathInput=sys.argv[1]
+    pathOutput=sys.argv[2]
+    pathDict=sys.argv[3]
+    pathQt=sys.argv[4]
+    loadResAndanswerAllQ(pathInput, pathOutput, pathDict, pathQt)
