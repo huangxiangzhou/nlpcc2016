@@ -15,6 +15,7 @@ class answerCandidate:
         self.qType = qType
         self.score = score
         self.kbDict = kbDict
+        self.origin = ''
 
     def calcScore(self, qtList):
         lcsSub = lcs.lcs(self.sub, self.qRaw)
@@ -109,51 +110,6 @@ def getAnswer(sub, pre, kbDict):
             return kb[pre]
     return 'NO ANSWER FOUND BY QA SYSTEM'
 
-
-def loadResAndanswerAllQ(pathInput, pathOutput, pathDict, pathQt, encode='utf16'):
-    print('Start to load kbDict from json format file: ' + pathDict)
-    kbDict = json.load(open(pathDict, 'r', encoding=encode))
-    print('Loaded kbDict completely! kbDic length is '+ str(len(kbDict)))
-    qtList = loadQtList(pathQt, encode)
-    answerAllQ(pathInput, pathOutput, list(kbDict), kbDict, qtList)
-
-
-
-def answerAllQ(pathInput, pathOutput, lKey, kbDict, qtList):
-    fq = open(pathInput, 'r', encoding='utf8')
-    i = 0
-    timeStart = time.time()
-    fo = open(pathOutput, 'w', encoding='utf8')
-    for line in fq:
-        i += 1
-        fo = open(pathOutput, 'a', encoding='utf8')
-        q = str(line.strip())
-        result = answerQ(q, lKey, kbDict, qtList)
-        fo.write('<question id='+str(i)+'>\t' + q + '\n')
-        if len(result) != 0:
-            answerSet = set()
-            fo.write('<triple id='+str(i)+'>\t')
-            for res in result:
-                if res.qType == 2:
-                    for pre in res.pre:
-                        answerTmp = getAnswer(res.sub, pre, kbDict)
-                        answerSet.add(answerTmp)
-                        fo.write(res.sub + ' ||| ' + pre + ' ||| ' + answerTmp + ' ====== ')
-                else:
-                    answerTmp = getAnswer(res.sub, res.pre, kbDict)
-                    answerSet.add(answerTmp)
-                    fo.write(res.sub + ' ||| ' + res.pre + ' ||| ' + answerTmp + ' ====== ')
-            fo.write('\n')
-            fo.write('<answer id='+str(i)+'>\t')
-            for ansTmp in answerSet:
-                fo.write(ansTmp)
-                if len(answerSet) > 1:
-                    fo.write(' ||| ')
-            fo.write('\n==================================================\n')
-            
-        print('processing ' + str(i) + 'th Q.\tAv time cost: ' + str((time.time()-timeStart) / i)[:6] + ' sec', end = '\r', flush=True)
-        fo.close()
-    fq.close()
     
 
 
@@ -184,7 +140,7 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0, debug=False):
 
     maxScore = 0
     qtMatchSet = set()
-
+    bestAnswer = set()
     for qt01 in qtList['01']:
         if qt01 == '' or q.find(qt01) == 0:
             qR01 = q.replace(qt01, '', 1)
@@ -335,39 +291,39 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0, debug=False):
     maxSubSetCopy = maxSubSet.copy()
     print('len(maxSubSet) = ' + str(len(maxSubSetCopy)), end = '\r', flush=True)
     maxSubSet = set()
+
+    maxSubSetIndex = set()
+
     for aCandidate in maxSubSetCopy:
-        aCfound = 0
-        for aC in maxSubSet:
-            if aC.pre == aCandidate.pre and aC.sub == aCandidate.sub:
-                aCfound = 1
-                break
-        if aCfound == 0:
+        strTmp = str(aCandidate.sub+'|'+aCandidate.pre)
+        if strTmp not in maxSubSetIndex:
+            maxSubSetIndex.add(strTmp)
             maxSubSet.add(aCandidate)
 
     maxPreSetCopy = maxPreSet.copy()
     print('len(maxPreSet) = ' + str(len(maxPreSetCopy)), end = '\r', flush=True)
     maxPreSet = set()
 
+    maxPreSetIndex = set()
+
     for aCandidate in maxPreSetCopy:
-        aCfound = 0
-        for aC in maxPreSet:
-            if aC.pre == aCandidate.pre and aC.sub == aCandidate.sub:
-                aCfound = 1
-                break
-        if aCfound == 0:
+        strTmp = str(aCandidate.sub+'|'+aCandidate.pre)
+        if strTmp not in maxPreSetIndex:
+            maxPreSetIndex.add(strTmp)
             maxPreSet.add(aCandidate)
 
     maxSPSetCopy = maxSPSet.copy()
     print('len(maxSPSet) = ' + str(len(maxSPSetCopy)), end = '\r', flush=True)
     maxSPSet = set()
+
+    maxSPSetIndex = set()
+
     for aCandidate in maxSPSetCopy:
-        aCfound = 0
-        for aC in maxSPSet:
-            if aC.pre == aCandidate.pre and aC.sub == aCandidate.sub:
-                aCfound = 1
-                break
-        if aCfound == 0:
+        strTmp = str(aCandidate.sub+'|'+aCandidate.pre)
+        if strTmp not in maxSPSetIndex:
+            maxSPSetIndex.add(strTmp)
             maxSPSet.add(aCandidate)
+ 
 
     for aCandidate in maxSubSet:
         scoreTmp = aCandidate.calcScore(qtList)
@@ -375,6 +331,7 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0, debug=False):
             maxScore = scoreTmp
             bestAnswer = set()
         if scoreTmp == maxScore:
+            aCandidate.origin = 'maxSub'
             bestAnswer.add(aCandidate)
             
     for aCandidate in maxPreSet:
@@ -383,6 +340,7 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0, debug=False):
             maxScore = scoreTmp
             bestAnswer = set()
         if scoreTmp == maxScore:
+            aCandidate.origin = 'maxPre'
             bestAnswer.add(aCandidate)
 
     for aCandidate in maxSPSet:
@@ -391,6 +349,7 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0, debug=False):
             maxScore = scoreTmp
             bestAnswer = set()
         if scoreTmp == maxScore:
+            aCandidate.origin = 'maxSP'
             bestAnswer.add(aCandidate)
 
 
@@ -400,6 +359,7 @@ def answerQ (qRaw, lKey, kbDict, qtList, threshold=0, debug=False):
             maxScore = scoreTmp
             bestAnswer = set()
         if scoreTmp == maxScore:
+            aCandidate.origin = 'qtMatch'
             bestAnswer.add(aCandidate)
 
 
@@ -474,12 +434,63 @@ def loadQtList(path, encode = 'utf16'):
 
     return qtList
         
-        
+
+def answerAllQ(pathInput, pathOutput, lKey, kbDict, qtList, qIDstart=1):
+    fq = open(pathInput, 'r', encoding='utf8')
+    i = qIDstart
+    timeStart = time.time()
+    fo = open(pathOutput, 'w', encoding='utf8')
+    fo.close()
+    for line in fq:
+        fo = open(pathOutput, 'a', encoding='utf8')
+        q = str(line.strip())
+        result = answerQ(q, lKey, kbDict, qtList)
+        fo.write('<question id='+str(i)+'>\t' + q + '\n')
+        if len(result) != 0:
+            answerSet = set()
+            fo.write('<triple id='+str(i)+'>\t')
+            for res in result:
+                if res.qType == 2:
+                    for pre in res.pre:
+                        answerTmp = getAnswer(res.sub, pre, kbDict)
+                        answerSet.add(answerTmp)
+                        fo.write(res.sub + ' ||| ' + pre + ' ||| '\
+                                 + answerTmp  + ' ||| ' +  str(res.qType)\
+                                 + ' ||| ' + str(res.score) + ' ||| ' + res.origin + ' ====== ')
+                else:
+                    answerTmp = getAnswer(res.sub, res.pre, kbDict)
+                    answerSet.add(answerTmp)
+                    fo.write(res.sub + ' ||| ' + res.pre + ' ||| '\
+                             + answerTmp  + ' ||| ' +  str(res.qType)\
+                             + ' ||| ' + str(res.score) + ' ||| ' + res.origin + ' ====== ')
+            fo.write('\n')
+            fo.write('<answer id='+str(i)+'>\t')
+            for ansTmp in answerSet:
+                fo.write(ansTmp)
+                if len(answerSet) > 1:
+                    fo.write(' ||| ')
+            fo.write('\n==================================================\n')
+            
+        print('processing ' + str(i) + 'th Q.\tAv time cost: ' + str((time.time()-timeStart) / i)[:6] + ' sec', end = '\r', flush=True)
+        fo.close()
+        i += 1
+    fq.close()       
     
 
-if len(sys.argv) == 5:
+def loadResAndanswerAllQ(pathInput, pathOutput, pathDict, pathQt, encode='utf16', qIDstart=1):
+    print('Start to load kbDict from json format file: ' + pathDict)
+    kbDict = json.load(open(pathDict, 'r', encoding=encode))
+    print('Loaded kbDict completely! kbDic length is '+ str(len(kbDict)))
+    qtList = loadQtList(pathQt, encode)
+    answerAllQ(pathInput, pathOutput, list(kbDict), kbDict, qtList, qIDstart=1)
+
+
+
+
+if len(sys.argv) == 6:
     pathInput=sys.argv[1]
     pathOutput=sys.argv[2]
     pathDict=sys.argv[3]
     pathQt=sys.argv[4]
-    loadResAndanswerAllQ(pathInput, pathOutput, pathDict, pathQt)
+    qIDstart=sys.argv[5]
+    loadResAndanswerAllQ(pathInput, pathOutput, pathDict, pathQt, 'utf16', qIDstart)
