@@ -38,16 +38,18 @@ wchar_t *lcommon(const wchar_t *string1, const wchar_t *string2) {
 
 static PyObject * lcs_function(PyObject *self, PyObject *args) {
     const wchar_t *_a, *_b;
-    wchar_t *ret = NULL;
+    wchar_t *res = NULL;
+    PyObject *ret = NULL;
     int strlen, i;
     if (!PyArg_ParseTuple(args, "uu", &_a, &_b))
         return NULL;
 
     //printf("input string1 is %ls\n", _a);
     //printf("input string2 is %ls\n", _b);
-    ret = lcommon(_a, _b);
-
-    return Py_BuildValue("u", ret); 
+    res = lcommon(_a, _b);
+    ret = Py_BuildValue("u", res);
+    free(res);
+    return ret; 
 }
 
 static PyMethodDef lcsMethods[] = {
