@@ -1,0 +1,24 @@
+﻿生成启动时间为 2017-03-31 10:06:47。
+     1>项目“E:\Dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec-win32.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在对“Release\word2vec-win32.unsuccessfulbuild”执行 Touch 任务。
+       ClCompile:
+         所有输出均为最新。
+         所有输出均为最新。
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Dataset\word2vec-win32\word2vec-win32\Release\word2vec-win32.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\word2vec-win32.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\Dataset\word2vec-win32\word2vec-win32\Release\word2vec-win32.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Dataset\word2vec-win32\word2vec-win32\Release\word2vec-win32.lib" /MACHINE:X86 Release\pttest.obj
+         Release\word2vec.obj
+         正在生成代码
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(550): warning C4716: “TrainModelThread”: 必须返回一个值
+         已完成代码的生成
+         word2vec-win32.vcxproj -> E:\Dataset\word2vec-win32\word2vec-win32\Release\word2vec-win32.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\Dataset\word2vec-win32\word2vec-win32\Release\word2vec-win32.exe;#1" /manifest "Release\word2vec-win32.exe.intermediate.manifest"
+       FinalizeBuildStatus:
+         正在删除文件“Release\word2vec-win32.unsuccessfulbuild”。
+         正在对“Release\word2vec-win32.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\Dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec-win32.vcxproj”(build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:02.66

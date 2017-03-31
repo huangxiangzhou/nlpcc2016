@@ -1,0 +1,95 @@
+﻿生成启动时间为 2017-02-15 12:22:38。
+     1>项目“E:\Dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec-win32.vcxproj”在节点 2 上(rebuild 个目标)。
+     1>_PrepareForClean:
+         正在删除文件“Debug\word2vec-win32.lastbuildstate”。
+       InitializeBuildStatus:
+         正在创建“Debug\word2vec-win32.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt pttest.cpp
+         pttest.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt word2vec.c
+         word2vec.c
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(50): warning C4305: “初始化”: 从“double”到“real”截断
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(50): warning C4305: “初始化”: 从“double”到“real”截断
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(55): warning C4244: “初始化”: 从“double”转换到“const int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(63): warning C4244: “函数”: 从“__int64”转换到“double”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(65): warning C4244: “函数”: 从“__int64”转换到“double”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(70): warning C4244: “函数”: 从“__int64”转换到“double”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(72): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(88): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : 参见“strcpy”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(104): warning C4244: “return”: 从“unsigned __int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(131): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : 参见“strcpy”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(137): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(141): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(142): warning C4244: “return”: 从“__int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(147): warning C4244: “return”: 从“__int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(155): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(157): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(172): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(206): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(207): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(208): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(210): warning C4244: “=”: 从“double”转换到“__int64”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(250): warning C4244: “=”: 从“__int64”转换到“char”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(256): warning C4244: “=”: 从“__int64”转换到“char”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(257): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(260): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(273): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(306): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(315): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(326): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : 参见“fscanf”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(334): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(349): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(352): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(358): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(365): warning C4244: “=”: 从“double”转换到“real”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(377): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(378): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(379): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(380): warning C4244: “函数”: 从“__int64”转换到“long”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(393): warning C4244: “=”: 从“double”转换到“real”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(404): warning C4244: “初始化”: 从“double”转换到“real”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(421): warning C4244: “函数”: 从“__int64”转换到“long”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(566): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(578): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(579): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(580): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(582): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(597): warning C4244: “=”: 从“double”转换到“real”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(684): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : 参见“strcpy”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(685): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : 参见“strcpy”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(686): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : 参见“strcpy”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(690): warning C4305: “=”: 从“double”到“real”截断
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(691): warning C4244: “=”: 从“double”转换到“real”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(692): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : 参见“strcpy”的声明
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(694): warning C4244: “=”: 从“double”转换到“real”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(701): warning C4244: “函数”: 从“__int64”转换到“size_t”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(705): warning C4244: “=”: 从“double”转换到“real”，可能丢失数据
+     1>e:\dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec.c(550): warning C4716: “TrainModelThread”: 必须返回一个值
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Dataset\word2vec-win32\word2vec-win32\Debug\word2vec-win32.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\word2vec-win32.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\Dataset\word2vec-win32\word2vec-win32\Debug\word2vec-win32.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Dataset\word2vec-win32\word2vec-win32\Debug\word2vec-win32.lib" /MACHINE:X86 Debug\pttest.obj
+         Debug\word2vec.obj
+         word2vec-win32.vcxproj -> E:\Dataset\word2vec-win32\word2vec-win32\Debug\word2vec-win32.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\Dataset\word2vec-win32\word2vec-win32\Debug\word2vec-win32.exe;#1" /manifest "Debug\word2vec-win32.exe.intermediate.manifest"
+       FinalizeBuildStatus:
+         正在删除文件“Debug\word2vec-win32.unsuccessfulbuild”。
+         正在对“Debug\word2vec-win32.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\Dataset\word2vec-win32\word2vec-win32\word2vec-win32\word2vec-win32.vcxproj”(rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:03.59
